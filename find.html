@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Check for your crop</title>
+        <style>
+            body {
+                background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.8)) , url(./far.jpg);
+                background-attachment: fixed;
+                background-size: cover;
+                background-position: center;
+                color: white;
+            }
+
+            h1{
+                text-align: center;
+            }
+
+            .button-primary {
+                background-color: #4caf50; /* Green button background */
+                color: #fff; /* White text */
+                border: none;
+                padding: 10px;
+                font-family: 'Arial', sans-serif;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
+    
+            .button-primary:hover {
+                background-color: #388e3c; /* Darker green on hover */
+            }   
+    
+            .input-field {
+                width: 47.8%;
+                padding: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #66bb6a; /* Light green border */
+                border-radius: 10px;
+            }
+
+            .result-message {
+                background-color: #4caf50; /* Green result message background */
+                color: #fff; /* White text */
+                padding: 10px;
+                width: 60%;
+                margin-top: 10px;
+                border-radius: 5px;
+                border-radius: 10px;
+                text-align: left;
+                position:relative;
+                left: -50px;
+            }
+
+            div{
+                padding:10px;
+                position: relative;
+                margin-top: 10px;
+                margin-left: 50px;
+                width: 80%;
+                top: 10%;
+                color: white;
+                text-align: left;
+                display: inline-block;
+            }
+
+            .label-bold {
+                font-size:larger;
+                text-align: center;
+            }
+            a{
+                margin: 0px 20px;
+                text-align: right;
+                color: rgb(149, 248, 253);
+            }
+            a:hover{
+                color: rgb(58, 249, 48);
+            }
+        </style>
+    </head>
+    <body>
+    <h1>CROP ADVISORY SYSTEM</h1>
+    <div>
+        <h2>Directions:</h2>
+        <p>
+            1. Check the Crop: <br>
+            Enter the amount of water available per acre in the 1st field.<br>
+            Enter the type of soil in the 2nd field.<br>
+            Enter the current season in the 3rd field.<br>
+            Click the "CHECK" button to generate a list of recommended crops.<br>
+            The recommended crops which meet the specified criteria will be displayed below.<br>    
+        </p>
+    </div>
+    <div>
+        <br><label class="label-bold">1. Check For The Crop</label>
+        <button class="button-primary" onclick="find()">CHECK</button><br>
+        <input type="number" id="waterAvailability" class="input-field" placeholder="Enter Water Availability(per acre) in kiloliters, ex:5000"><br>
+        <input type="text" id="soilType" class="input-field" placeholder="Enter Soil Type, ex:Red, Alluvial, laterite, black"><br>
+        <input type="text" id="seasonType" class="input-field" placeholder="Enter Season, ex:summer, winter, rainy"><br>
+        <div id="checkResult" class="result-message"></div> 
+        <a href="./display.html">2.All Crops</a>
+        <a href="./seed.html">3.Check Seeds</a>
+    </div>
+
+    <script>
+       var cd = {
+            'Wheat'     :{'Water': 2200, 'Soiltype': 'alluvial','season':'winter'},
+            'Rice'      :{'Water': 4100, 'Soiltype': 'alluvial','season':'summer'},
+            'Soybean'   :{'Water': 2400, 'Soiltype': 'alluvial','season':'summer'},
+            'Potato'    :{'Water': 2000, 'Soiltype': 'alluvial','season':'winter'},
+            'Sugarcane' :{'Water': 6900, 'Soiltype': 'alluvial','season':'summer'},
+            'Banana'    :{'Water': 7000, 'Soiltype': 'alluvial','season':'summer'},
+            'Corn'      :{'Water': 1900, 'Soiltype': 'red'     ,'season':'summer'},
+            'Red Gram'  :{'Water': 1800, 'Soiltype': 'red'     ,'season':'rainy' },
+            'Turmeric'  :{'Water': 2400, 'Soiltype': 'red'     ,'season':'winter'},
+            'Cotton'    :{'Water': 3200, 'Soiltype': 'red'     ,'season':'summer'},
+            'Chillies'  :{'Water': 2300, 'Soiltype': 'red'     ,'season':'summer'},
+            'Tobacoo'   :{'Water': 2500, 'Soiltype': 'red'     ,'season':'rainy'},
+            'sunflower' :{'Water': 5000, 'Soiltype': 'black'   ,'season':'summer'},
+            'Mango'     :{'Water': 6000, 'Soiltype': 'black'   ,'season':'rainy'},
+            'Oil palm'  :{'Water': 7000, 'Soiltype': 'black'   ,'season':'summer'},
+            'Rose'      :{'Water': 3000, 'Soiltype': 'laterite','season':'summer'},
+            'Jasmine'   :{'Water': 2000, 'Soiltype': 'laterite','season':'summer'},
+            'Alovera'   :{'Water': 1500, 'Soiltype': 'laterite','season':'rainy'},
+            'Coriander' :{'Water': 1700, 'Soiltype': 'laterite','season':'winter'},
+            'Tomatoes'  :{'Water': 3800, 'Soiltype': 'laterite','season':'summer'},
+        };
+
+        function find() {
+            var a = parseInt(document.getElementById("waterAvailability").value);
+            var b = (document.getElementById("soilType").value).toLowerCase();
+            var c = (document.getElementById("seasonType").value).toLowerCase();
+            var result_list = [];
+            for (var crop in cd) {
+                var water = cd[crop]['Water'];
+                var soil = cd[crop]['Soiltype'];
+                var seas = cd[crop]['season'];
+                if (water <= a) {
+                    if(soil == b)
+                    {
+                        if(seas == c)
+                        {
+                            result_list.push(crop);
+                        }
+                    }
+                }
+            }
+            if(a && b && c){
+                document.getElementById("checkResult").innerHTML = "Crops with the water requirement " + a + " per acre and the given soil type are :<br>" + result_list.join('<br>');
+            }
+            else{
+                document.getElementById("checkResult").innerHTML = "Please Enter valid data";
+            }
+        }
+        </script>
+    </body>
+</html>

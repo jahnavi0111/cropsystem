@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Check for your crop</title>
+        <style>
+            body {
+                background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.8)) , url(./far.jpg);
+                background-attachment: fixed;
+                background-size: cover;
+                background-position: center;
+                color: white;
+            }
+            h1{
+                text-align: center;
+            }
+            .button-primary {
+                background-color: #4caf50; /* Green button background */
+                color: #fff; /* White text */
+                border: none;
+                padding: 10px;
+                font-family: 'Arial', sans-serif;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
+            .button-primary:hover {
+                background-color: #388e3c; /* Darker green on hover */
+            }   
+            .input-field {
+                width: 47.8%;
+                padding: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #66bb6a; /* Light green border */
+                border-radius: 10px;
+            }
+            .result-message {
+                background-color: #4caf50; /* Green result message background */
+                color: #fff; /* White text */
+                padding: 10px;
+                width: 60%;
+                margin-top: 10px;
+                border-radius: 5px;
+                border-radius: 10px;
+                text-align: left;
+                position:relative;
+                left: -50px;
+            }
+            div{
+                padding:10px;
+                position: relative;
+                margin-top: 10px;
+                margin-left: 50px;
+                width: 80%;
+                top: 10%;
+                color: white;
+                text-align: left;
+                display: inline-block;
+            }
+            .label-bold {
+                font-size:larger;
+                text-align: center;
+            }
+            a{
+                margin: 0px 20px;
+                text-align: right;
+                color: rgb(149, 248, 253);
+            }
+            a:hover{
+                color: rgb(58, 249, 48);
+            }
+        </style>
+    </head>
+    <body>
+    <h1>CROP ADVISORY SYSTEM</h1>
+    <div>
+        <h2>Directions:</h2>
+        <p>
+            3. Check the Seeds: <br>
+            Enter the name of the Crop.<br>
+            Click the "CHECK" button to generate a list of recommended seeds.<br>
+            The recommended seeds which meet the specified criteria will be displayed below.<br>    
+        </p>
+    </div>
+    <div>
+        <br><label class="label-bold">3. Check for seeds</label>
+        <button class="button-primary" onclick="find()">CHECK</button><br>
+        <input type="text" id="Cropname" class="input-field" placeholder="Enter Crop, ex:soyabean"><br>
+        <div id="checkResult" class="result-message"></div>
+        <a href="./index.html">Go Home</a>
+    </div>
+
+    <script>
+        var cd = {
+            'wheat'     :{'Seed': 'PBW 705, PBW 719, HD 3226',
+                'Info':'Wheat is sown at a rate of 100-120 kg of seeds per acre. Row spacing of about 20-25 cm is common. Plant the seeds at a depth of 5-7 cm in the soil. Wheat typically requires nitrogen, phosphorus, and potassium fertilizers.'},
+            'rice'      :{'Seed':'BPT-5204,MTU-1010, MTU-1075, MTU-1121, MTU-1153, MTU-1156, Swarna',
+                'Info': ' Ensure that the rice seeds you choose are of high quality, Nutrient management is essential for optimizing rice yield. Properly store the harvested rice in a cool, dry place to prevent spoilage.'},
+            'soyabean'   :{'Seed': 'JS 95-60, JS 93-05, JS 335, JS 20, JS 922, JS 20-05, JS 97-60', 
+                'Info': 'Space the rows 45 to 60 cm apart and the plants 10 to 15 cm apart within the row. Water the soybeans regularly, especially during the germination and flowering stages. Fertilize the soybeans with nitrogen, phosphorus, and potassium according to the soil test recommendations.'},
+            'potato'    :{'Seed': 'Kufri Jyoti, Kufri Jawahar, Kufri Satluj, Kufri Lalima, Kufri Pukhraj, Kufri Anand, Kufri Chipsona-1, Kufri Chipsona-2', 
+                'Info': 'Choose a well-drained site with full sun exposure. Prepare the soil by adding compost or manure. Plant the seeds 6-8 inches deep and 12 inches apart. Water the plants regularly, especially during hot weather.'},
+            'sugarcane' :{'Seed': 'CoC 671, CoC 94010, CoS 767, CoS 8436, CoS 92429:', 
+                'Info': ' plant them horizontally or diagonally, about 2-4 inches deep and 1.5-2 feet apart. sugarcane requires nitrogen, phosphorus, and potassium fertilizers.'},
+            'banana'    :{'Seed': 'Rasthali, Poovan, Nendran, Robusta, Dwarf Cavendish', 
+                'Info': 'Plant banana suckers or plantlets in a hole that is about 2-3 feet deep and wide enough. Ensure that the banana plants receive 8-10 hours a day.  use a balanced fertilizer with a higher potassium (K) content to promote fruit development.'},
+            'corn'      :{'Seed': 'Ganga 1, Deccan Queen, ProAgro 4000, Bioseed 9797, JK Shakti',
+                'Info': 'The recommended seed rate for corn in Andhra Pradesh typically varies from 18,000 to 22,000 plants per acre.  rows are generally spaced about 30-45 cm apart, with seeds sown at a distance of about 20-25 cm within the rows.'},
+            'red Gram'  :{'Seed': 'LRG-41, LRG-52, ICPH-2671, ICPH-2740, BSMR-736, WAR-3, WRG-65', 
+                'Info': 'The recommended seed rate for red gram cultivation typically ranges from 10 to 15 kg of seeds per acre. Typically, a row-to-row spacing of 60-90 cm and a plant-to-plant spacing of 10-15 cm is recommended for rainfed crops' },
+            'cotton'    :{'Seed': 'RCH-2, MCU-5, Bunny-5, MCU 5, MCU 12, JK BG II.', 
+                'Info': 'A seed rate of 8-10 kg of cotton seeds per acre, Seed treatment helps improve germination and early plant health. Proper irrigation practices should be followed to ensure optimal cotton plant growth.'},
+            'chillies'  :{'Seed': 'Andhra Jyothi, Byadagi Chilli, Guntur Chilli, Teja Chilli, Wonderhot Chilli ',
+                'Info': 'Popular varieties in the region include Guntur Sannam, Byadgi, and other hot chili varieties. If you are directly sowing chili seeds in the field, you can use a seed rate of 2-3 grams of seeds per square meter. Use high-quality chili pepper seeds from a reliable source to ensure good germination rates and healthy plants.'},
+            'tobacoo'   :{'Seed': 'FCV tobacco, Burley tobacco, Natu tobacco',  
+                'Info': 'Sow the tobacco seeds thinly and evenly on the seedbed. You can mix the seeds with a carrier material like sand to ensure even distribution. Ensure proper spacing between plants to allow for healthy growth and air circulation.'},
+            'sunflower' :{'Seed': 'KBSH 1, KBSH 41, KBSH 44, RSF 10, CO 2',
+                'Info': 'it prefers well-drained soils with a pH of 5.5 to 7.0. Sunflower plants typically mature in 90-120 days.  fertilize them every 2-3 weeks with a balanced fertilizer.'},
+            'mango'     :{'Seed': 'Banginapalli, Himayat, Neelam, Pedda Rasipuram, ,Totapuri, Raspuri', 
+                'Info': 'Mango seeds typically germinate within 2-4 weeks. start fruiting 3-5 years after planting. Plant the seedlings 20-25 feet apart.'},
+            'oil palm'  :{'Seed': 'Tenera, DxP, MxP',
+                'Info': 'The land should be well-drained and should have a pH level of between 5.5 and 6.5. You should also add organic matter to the soil to improve its fertility. To plant oil palm seeds, sow them directly into the ground at a depth of about 2 inches. Space the seeds about 2 feet apart. The seeds should germinate within 2-3 months.'},
+            'rose'      :{'Seed': 'Hybrid tea roses, Floribunda roses,Miniature roses, Climbing roses:', 
+                'Info': 'Roses typically bloom within 1-2 years of planting. Space the rose plants at least 2-3 feet apart to allow for good air circulation. Roses benefit from regular fertilization'},
+            'jasmine'   :{'Seed': 'Jasminum sambac, Jasminum officinale, Jasminum grandiflorum, Jasminum auriculatum', 
+                'Info': ' Insert the cuttings about 2 inches deep into a well-draining potting mix or soil. Water the soil.  Remove any leaves from the lower portion of the cutting, leaving a few leaves at the tip'},
+            'alovera'   :{'Seed': ' Barbadensis Mille', 
+                'Info': 'Aloe vera is a drought-tolerant plant, but it will benefit from regular watering, prefer full sun to partial shade. relatively pest- and disease-resistant.'},
+            'coriander' :{'Seed': 'Attaluru dhaniya, Guntur dhaniya, DH-30, PD-1', 
+                'Info': 'Coriander seeds will germinate in about 7-10 days, will be ready to harvest in about 6-8 weeks.You should also make sure that the seeds are fresh and have a high germination rate.'},
+            'tomatoes'  :{'Seed':'Arka Meghdoot, Arka Vikas, Arka Abhyudaya, Pusa Ruby, Roma VF, Cherry Belle, Sweet 100',  
+                'Info': ' sow them directly in the garden 2-3 weeks after the last frost date. Space the seeds 12-18 inches apart.fertilize them every 2-3 weeks with a balanced fertilizer. Harvest your tomatoes when they are ripe and red.'},
+        };
+
+        function find() {
+            var userInput = (document.getElementById("Cropname").value).toLowerCase();
+            var cropInfo = cd[userInput];
+            if(userInput){
+                document.getElementById("checkResult").innerHTML = "The Required seeds for " + userInput + " per acre are :<br>" + cropInfo.Seed +"<br><br>" + "Consider the below Instructions :<br>" + cropInfo.Info;
+            }  
+            else{
+                document.getElementById("checkResult").innerHTML = "Please Enter valid Crop Name";
+            }
+        }
+        </script>
+    </body>
+</html>

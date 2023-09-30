@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Display crops</title>
+        <style>
+            body {
+                background-image:linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.8)) , url(./far.jpg);
+                background-attachment: fixed;
+                background-size: cover;
+                background-position: center;
+                color: white;
+            }
+
+            h1{
+                text-align: center;
+            }
+
+            .button-primary {
+                background-color: #4caf50; /* Green button background */
+                color: #fff; /* White text */
+                border: none;
+                padding: 10px;
+                cursor: pointer;
+                font-family: 'Arial', sans-serif;
+                border-radius: 5px;
+                margin-left: 10px;
+            }
+    
+            .button-primary:hover {
+                background-color: #388e3c; /* Darker green on hover */
+            }   
+    
+            .input-field {
+                width: 47.8%;
+                padding: 10px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                border: 1px solid #66bb6a; /* Light green border */
+                border-radius: 10px;
+            }
+
+            .result-message {
+                background-color: #4caf50; /* Green result message background */
+                color: #fff; /* White text */
+                padding: 10px;
+                width: 60%;
+                margin-top: 10px;
+                border-radius: 5px;
+                border-radius: 10px;
+                text-align: left;
+                position:relative;
+                left: -50px;
+            }
+
+            div{
+                padding:10px;
+                position: relative;
+                margin-top: 10px;
+                margin-left: 50px;
+                width: 80%;
+                top: 10%;
+                color: white;
+                text-align: left;
+                display: inline-block;
+            }
+            .label-bold {
+                font-size: larger;
+                text-align: center;
+            }
+
+            a{
+                margin: 0px 20px;
+                text-align: right;
+                color: rgb(149, 248, 253);
+            }
+            a:hover{
+                color: rgb(58, 249, 48);
+            }
+        </style>
+    </head>
+    <body>
+    <h1>CROP ADVISORY SYSTEM</h1>
+    <div>
+        <h2>Directions:</h2>
+        <p>2. Display Crops <br>
+            Click the "DISPLAY" button to generate all Crops<br> 
+        </p>
+    </div>
+    <div>
+        <br><label class="label-bold">2. Display All The Crops</label>
+        <button class="button-primary" onclick="display()">DISPLAY CROPS</button>
+        <div id="displayResult" class="result-message"></div>
+        <a href="./seed.html">3.Check Seed</a>
+        <a href="./index.html">Home</a>
+    </div>
+    <script>
+        var cd = {
+            'Wheat'     :{'Water': 2200,  'Soiltype': 'red soil'     ,'season':'winter'},
+            'Rice'      :{'Water': 4100, 'Soiltype': 'alluvial soil','season':'summer'},
+            'Soybean'   :{'Water': 2400,  'Soiltype': 'black soil'   ,'season':'summer'},
+            'Potato'    :{'Water': 2000,  'Soiltype': 'black soil'   ,'season':'winter'},
+            'Sugarcane' :{'Water': 6900, 'Soiltype': 'alluvial soil','season':'summer'},
+            'Banana'    :{'Water': 7000, 'Soiltype': 'alluvial soil','season':'summer'},
+            'Corn'      :{'Water': 1900,  'Soiltype': 'red soil'     ,'season':'summer'},
+            'Red Gram'  :{'Water': 1800,  'Soiltype': 'red soil'     ,'season':'rainy' },
+            'Turmeric'  :{'Water': 2400, 'Soiltype': 'red soil'     ,'season':'winter'},
+            'Cotton'    :{'Water': 3200, 'Soiltype': 'black soil'   ,'season':'summer'},
+            'Chillies'  :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Tobacoo'   :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'sunflower' :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Mango'     :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Oil palm'  :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Rose'      :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Jasmine'   :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Alovera'   :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Coriander' :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+            'Tomatoes'  :{'Water': 2300,  'Soiltype': 'alluvial soil','season':'summer'},
+        };
+
+        function display() {
+            var output = "";
+            for (var crop in cd) {
+                output += crop + ":<br>";
+                output += "Water: " + cd[crop]['Water'] + "<br>";
+                output += "season: " + cd[crop]['season'] + "<br>";
+                output += "Soiltype: " + cd[crop]['Soiltype'] + "<br><br>";
+            }
+            document.getElementById("displayResult").innerHTML = output;
+        }
+        </script>
+    </body>
+</html>
